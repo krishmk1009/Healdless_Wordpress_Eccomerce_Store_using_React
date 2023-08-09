@@ -1,36 +1,41 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { fetchProduct } from "../Store/productSlice"
+
+
+
+
 const Product = () => {
+    const dispatch = useDispatch();
+    const { data: products, status } = useSelector((state) => state.product)
+
     useEffect(() => {
-        fetchPro()
+
+        dispatch(fetchProduct());
+
 
 
     }, [])
 
-    const value = JSON.parse(localStorage.getItem("user"));
-    console.log("this is the token: ", value.token)
-    const url = "http://localhost/firstproject/wp-json/wc/v3/"
-    const api = axios.create({
-        baseURL: url,
-        headers: {
-            Authorization: `Bearer${value.token}`
-        }
-    })
+    console.log(products)
+    console.log(status)
 
-    const fetchPro = async () => {
-        try {
-            const result = await api.get("/products");
-            console.log(result.data)
-        } catch (error) {
-            console.log(error)
-        }
-
-    }
 
 
 
     return (
-        <div>Product</div>
+        <div>
+            <h1>Product List</h1>
+
+            <ul>
+                {products.map((product) => (
+                    <li key={product.id}>{product.name}</li>
+                ))}
+            </ul>
+
+        </div>
     )
 }
 
